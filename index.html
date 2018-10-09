@@ -1,88 +1,231 @@
 <!DOCTYPE html>
-<html >
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.7, maximum-scale=0.7, user-scalable=no" >  
-<title>主页测试</title>
-<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
-
-</head>
-<body>
-<canvas id="demo-canvas" width="2420" height="979"></canvas>
-<script>
-(function () {
-	var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
-	initHeader();
-	addListeners();
-	function initHeader() {
-		width = window.innerWidth + 500;
-		height = window.innerHeight;
-		target = { x: 0, y: height };
-		canvas = document.getElementById('demo-canvas');
-		canvas.width = width;
-		canvas.height = height;
-		ctx = canvas.getContext('2d');
-		circles = [];
-		for (var x = 0; x < width * 0.5; x++) {
-			var c = new Circle();
-			circles.push(c);
+<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.7, minimum-scale=0.7, maximum-scale=0.7, user-scalable=no" >  
+	<title>欢迎来到我的主页</title>
+	<style>
+		html,body{
+			padding:0;
+			margin:0;
+			overflow: hidden;
 		}
-		animate();
-	}
-	function addListeners() {
-		window.addEventListener('scroll', scrollCheck);
-		window.addEventListener('resize', resize);
-	}
-	function resize() {
-		width = window.innerWidth + 100;
-		height = window.innerHeight;
-		canvas.width = width;
-		canvas.height = height;
-	}
-	function animate() {
-		if (animateHeader) {
-			ctx.clearRect(0, 0, width, height);
-			for (var i in circles) {
-				circles[i].draw();
+	</style>
+	</head>
+	
+	<body>
+		<canvas style="background-color: #0f0f0f;position: absolute; z-index: -1;" id="mycanvas"></canvas>
+		<canvas  id="demo-canvas"></canvas>
+	</body>
+	<script>
+	document.addEventListener('visibilitychange',function(){
+		if(document.visibilityState=='hidden') {
+			normal_title=document.title;
+			document.title='(づ￣ 3￣)づ';
+		}
+		else{
+			document.title=normal_title;
+		}
+	});
+	</script>
+	<script>
+	(function() {
+		var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
+		initHeader();
+		addListeners();
+	
+		function initHeader() {
+			width = window.innerWidth ;
+			height = window.innerHeight;
+			target = {
+				x: 0,
+				y: height
+			};
+			canvas = document.getElementById('demo-canvas');
+			canvas.width = width;
+			canvas.height = height;
+			ctx = canvas.getContext('2d');
+			circles = [];
+			for(var x = 0; x < width * 0.5; x++) {
+				var c = new Circle();
+				circles.push(c);
 			}
+			animate();
 		}
-		requestAnimationFrame(animate);
-	}
-	function Circle() {
-		var _this = this;
-		(function () {
-			_this.pos = {};
-			init();
-			console.log(_this);
-		})();
-		function init() {
-			_this.pos.x = Math.random() * width;
-			_this.pos.y = height + Math.random() * 100;
-			_this.alpha = 0.1 + Math.random() * 0.3;
-			_this.scale = 0.1 + Math.random() * 0.3;
-			_this.velocity = Math.random();
+	
+		function addListeners() {
+			window.addEventListener('resize', resize);
 		}
-		this.draw = function () {
-			if (_this.alpha <= 0) { init(); }
-			_this.pos.y -= _this.velocity;
-			_this.alpha -= 0.0005;
-			ctx.beginPath();
-			ctx.arc(_this.pos.x, _this.pos.y, _this.scale * 10, 0, 2 * Math.PI, false);
-			ctx.fillStyle = 'rgba(255,255,255,' + _this.alpha + ')'; ctx.fill();
-		};
-	}
-})();
-</script>
-<script>
-document.addEventListener('visibilitychange',function(){
-if(document.visibilityState=='hidden') {
-normal_title=document.title;
-document.title='(づ￣ 3￣)づ';
-}
-else
-document.title=normal_title;
-});
-</script>
-
-</body>
+	
+		function resize() {
+			width = window.innerWidth + 100;
+			height = window.innerHeight;
+			canvas.width = width;
+			canvas.height = height;
+		}
+	
+		function animate() {
+			if(animateHeader) {
+				ctx.clearRect(0, 0, width, height);
+				for(var i in circles) {
+					circles[i].draw();
+				}
+			}
+			requestAnimationFrame(animate);
+		}
+	
+		function Circle() {
+			var _this = this;
+			(function() {
+				_this.pos = {};
+				init();
+				console.log(_this);
+			})();
+	
+			function init() {
+				_this.pos.x = Math.random() * width;
+				_this.pos.y = height + Math.random() * 100;
+				_this.alpha = 0.1 + Math.random() * 0.3;
+				_this.scale = 0.1 + Math.random() * 0.3;
+				_this.velocity = Math.random();
+			}
+			this.draw = function() {
+				if(_this.alpha <= 0) {
+					init();
+				}
+				_this.pos.y -= _this.velocity;
+				_this.alpha -= 0.0005;
+				ctx.beginPath();
+				ctx.arc(_this.pos.x, _this.pos.y, _this.scale * 10, 0, 2 * Math.PI, false);
+				ctx.fillStyle = 'rgba(255,255,255,' + _this.alpha + ')';
+				ctx.fill();
+			};
+		}
+	})();
+	</script>
+	<script type="text/javascript">
+		var canv=document.getElementById("mycanvas");
+		var ctx=canv.getContext("2d");
+		canv.width=window.innerWidth;
+		canv.height=window.innerHeight;
+		var opt={
+			num:150,//粒子数量
+			defspeed:0,//粒子运动初始化
+			speed:1,//粒子运动变量
+			color:"rgba(255,0,0,1)",//粒子颜色
+			linecolor:"rgba(255,255,255,1)",//线条颜色
+			defr:1,//粒子半径
+			r:1,//半径变量
+			mindis:200//粒子间最小距离
+		}
+		var part=[];
+		 var line = opt.linecolor.match(/\d+/g);
+		function inti(){
+			this.x = Math.random()*window.innerWidth;           //粒子的x轴坐标
+	        this.y = Math.random()*window.innerHeight;           //粒子的y轴坐标
+	        //console.log(window.innerWidth+"|"+this.x);
+	        this.speed = opt.defspeed + opt.speed*Math.random();     //粒子的运动速度
+	        this.directionAngle = Math.floor(Math.random()*360);                //粒子运动的方向
+	        this.color = opt.color ;                                    //粒子的颜色
+	        this.radius = opt.defr+Math.random()*opt.r;    //粒子的半径大小
+	        this.vector = {
+	            x:this.speed * Math.cos(this.directionAngle),       //粒子在x轴的速度
+	            y:this.speed * Math.sin(this.directionAngle)        //粒子在y轴的速度
+	        }
+	        this.update = function(){                   //粒子的更新函数
+	            this.border();                           //判断粒子是否到了边界
+	            this.x += this.vector.x;                //粒子下一时刻在x轴的坐标
+	            this.y += this.vector.y;                //粒子下一时刻在y轴的坐标
+	            //console.log(this.x);
+	        }
+	         this.border = function(){
+	         	if(this.x >= window.innerWidth || this.x<= 0){      //如果到达左右边界，就让x轴的速度变为原来的负数
+               		this.vector.x *= -1;
+	            }
+	            if(this.y >= window.innerHeight || this.y <= 0){     //如果到达上下边界，就让y轴的速度变为原来的负数
+	            	this.vector.y *= -1;
+	            }
+	            if(this.x > window.innerWidth){                     //下面是改变浏览器窗口大小时的操作，改变窗口大小后有的粒子会被隐藏，让他显示出来即可
+	                this.x = window.innerWidth;
+	            }
+	            if(this.y > window.innerHeight){
+	                this.y = window.innerHeight;
+	            }
+	            if(this.x < 0){
+	                this.x = 0;
+	            }
+	            if(this.y < 0){
+	                this.y = 0;
+	            }
+	         }
+	         
+	         this.draw=function(){
+	         	ctx.beginPath();
+	            ctx.arc(this.x, this.y, this.radius ,0 ,Math.PI * 2);
+	            ctx.closePath();
+	            ctx.fillStyle = "#F5F5F5";
+	            ctx.fill();
+	         }
+		}
+		window.onload=function init(){
+		   
+		   for(var i = 0;i<opt.num; i++){
+		        part.push(new inti());
+		   }
+		
+		   loop();
+		}
+		var _x,_y=0;
+		var x_,y_=0;
+		function loop(){
+		    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+		    for(var i = 0;i<part.length; i++){
+		        part[i].update();
+		        part[i].draw();
+		        
+		    }
+		   for(let i = 0;i<part.length; i++){
+			   	if((part[i].x>_x&&part[i].x<x_)&&(part[i].y>_y&&part[i].y<y_)){
+	           		 linePoint(part[i],part)
+	           		}
+       		 }
+		    window.requestAnimationFrame(loop);
+		}
+		 document.getElementById('demo-canvas').onmousemove = function( e ){
+            var mx = e.layerX;
+            var my = e.layerY;
+            _x=mx-100;
+            x_=mx+100;
+            _y=my-100;
+            y_=my+100;
+           /* for(var i=0;i<part.length;i++){
+            	 	if((part[i].x>mx-200&&part[i].x<mx+200)&&(part[i].y>my-200&&part[i].y<my+200)){
+            	 		linePoint(part[i],part);
+            	 		//console.log(1);
+            	 	}
+            }
+            ctx.clearRect(mx-200,my-200,mx+200,my+200);*/
+        };
+        
+         function linePoint(point,hub){
+	        for(var i = 0;i<hub.length;i++){
+	            var distance = getDistance(point,hub[i]);
+	            var opacity = 1 - distance/opt.mindis;
+	            //console.log(opacity)
+	            if(opacity > 0){
+	                ctx.lineWidth = 0.5;
+	                ctx.strokeStyle = "rgba("+line[0]+","+line[1]+","+line[2]+","+opacity+")";
+	                ctx.beginPath();
+	                ctx.moveTo(point.x,point.y);
+	                ctx.lineTo(hub[i].x,hub[i].y);
+	                ctx.closePath();
+	                ctx.stroke();
+	                //console.log(1);
+	            }
+	        }
+	    }
+         function getDistance(point1,point2){
+        return Math.sqrt(Math.pow(point1.x-point2.x,2) + Math.pow(point1.y - point2.y ,2));
+    }
+	</script>
 </html>
